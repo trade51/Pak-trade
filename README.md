@@ -2,92 +2,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trade 1 | Unified System</title>
+    <title>Pak Trade | Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap');
+        body { font-family: 'Outfit', sans-serif; background: #0a0a0a; color: #fff; }
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .gradient-text { background: linear-gradient(90deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .node-card { transition: transform 0.3s ease, border 0.3s ease; }
+        .node-card:hover { transform: translateY(-5px); border: 1px solid #3b82f6; }
+        .app-container { max-width: 480px; margin: auto; min-height: 100vh; position: relative; padding-bottom: 100px; }
+    </style>
 </head>
-<body class="bg-gray-900 text-white font-sans p-4">
+<body>
 
+<div class="app-container">
     <!-- Header -->
-    <header class="flex justify-between items-center mb-8 border-b border-gray-700 pb-4">
-        <div id="adminLogo" class="cursor-pointer">
-            <h1 class="text-2xl font-bold text-blue-500">Trade 1</h1>
-        </div>
-        <div id="userHeader" class="text-right">
-            <p class="text-xs text-gray-400">Balance</p>
-            <h2 id="balance" class="text-xl font-bold">0.00 PKR</h2>
-        </div>
+    <header class="p-6 flex justify-between items-center">
+        <h1 id="adminLogo" class="text-2xl font-black gradient-text tracking-tighter cursor-pointer">PAK TRADE</h1>
+        <div class="w-10 h-10 rounded-full bg-blue-600/20 flex items-center justify-center border border-blue-500/30">M</div>
     </header>
 
-    <!-- Main Content Container -->
-    <div id="contentArea">
-        
-        <!-- USER VIEW -->
-        <div id="userView">
-            <div class="bg-gray-800 p-6 rounded-xl border border-green-500 mb-6">
-                <h3 class="text-sm text-gray-400">Live Mining</h3>
-                <p id="earningsDisplay" class="text-3xl font-bold text-green-400">0.000000 PKR</p>
-            </div>
-            
-            <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
-                <h3 class="font-bold mb-4">Investment Deposit</h3>
-                <form id="depositForm" class="space-y-3">
-                    <input type="text" id="tid" placeholder="TID Number" class="w-full bg-gray-900 p-2 rounded border border-gray-700" required>
-                    <input type="number" id="amount" placeholder="Amount (Min 300)" class="w-full bg-gray-900 p-2 rounded border border-gray-700" required>
-                    <button type="submit" class="w-full bg-blue-600 p-2 rounded font-bold hover:bg-blue-700">Submit</button>
-                </form>
+    <!-- Main Balance Card -->
+    <div class="px-6 py-2">
+        <div class="glass p-8 rounded-[2rem] text-center shadow-[0_0_50px_-12px_rgba(59,130,246,0.3)]">
+            <p class="text-gray-500 text-xs tracking-widest uppercase">Available Balance</p>
+            <h2 id="balance" class="text-5xl font-black mt-2">0.000000</h2>
+            <div class="mt-6 flex justify-center gap-4">
+                <button class="bg-blue-600 px-6 py-2 rounded-full font-bold text-sm hover:scale-105 transition">DEPOSIT</button>
+                <button class="bg-white/10 px-6 py-2 rounded-full font-bold text-sm hover:scale-105 transition">WITHDRAW</button>
             </div>
         </div>
-
-        <!-- ADMIN VIEW (Initially Hidden) -->
-        <div id="adminView" class="hidden">
-            <h2 class="text-red-500 font-bold mb-4">ADMIN CONTROL PANEL</h2>
-            <div class="bg-gray-800 p-4 rounded border border-red-500 overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead><tr class="text-gray-400 border-b border-gray-700"><th class="p-2">User TID</th><th class="p-2">Action</th></tr></thead>
-                    <tbody id="adminTable">
-                        <tr class="border-b border-gray-700">
-                            <td class="p-2">TID-998877</td>
-                            <td class="p-2 space-x-1">
-                                <button onclick="alert('Balance Updated!')" class="bg-green-600 px-2 py-1 rounded">Approve</button>
-                                <button onclick="alert('Request Rejected!')" class="bg-red-600 px-2 py-1 rounded">Reject</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <button onclick="location.reload()" class="mt-4 w-full bg-gray-700 p-2 rounded">Exit Admin Mode</button>
-        </div>
-
     </div>
 
-    <script>
-        // 1. Live Mining Simulation
-        let earnings = 0;
-        setInterval(() => {
-            earnings += 0.0005;
-            document.getElementById("earningsDisplay").innerText = earnings.toFixed(6) + " PKR";
-        }, 1000);
+    <!-- Nodes Section -->
+    <div class="px-6 py-8">
+        <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
+            <span class="w-2 h-6 bg-blue-600 rounded-full"></span> Active Nodes
+        </h3>
+        <div id="machineGrid" class="grid grid-cols-1 gap-6"></div>
+    </div>
 
-        // 2. Admin Mode Trigger (5 Taps + Key)
-        let tapCount = 0;
-        document.getElementById("adminLogo").addEventListener("click", () => {
-            tapCount++;
-            if (tapCount >= 5) {
-                const key = prompt("Enter Admin Key:");
-                if (key === "5426") {
-                    document.getElementById("userView").classList.add("hidden");
-                    document.getElementById("userHeader").classList.add("hidden");
-                    document.getElementById("adminView").classList.remove("hidden");
-                }
-                tapCount = 0;
-            }
-        });
+    <!-- Navigation -->
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] glass rounded-full p-2 flex justify-around items-center">
+        <button class="p-3 text-blue-500 bg-blue-500/10 rounded-full">🏠</button>
+        <button class="p-3 text-gray-500">📊</button>
+        <button class="p-3 text-gray-500">⚙️</button>
+    </nav>
+</div>
 
-        // 3. Deposit Submit
-        document.getElementById("depositForm").addEventListener("submit", (e) => {
-            e.preventDefault();
-            alert("Deposit Request Submitted to Admin!");
-        });
-    </script>
+<script>
+    const grid = document.getElementById("machineGrid");
+    for(let i=1; i<=4; i++) {
+        grid.innerHTML += `
+        <div class="glass node-card rounded-[1.5rem] p-5 flex items-center gap-4">
+            <img src="https://source.unsplash.com/100x100/?crypto,network&sig=${i}" class="w-16 h-16 rounded-2xl object-cover">
+            <div class="flex-grow">
+                <h4 class="font-bold">Node Machine ${i}</h4>
+                <p class="text-[10px] text-blue-400">Profit: 50 PKR/day</p>
+                <div class="w-full bg-white/10 h-1.5 rounded-full mt-2">
+                    <div class="bg-blue-500 h-1.5 rounded-full w-[60%]"></div>
+                </div>
+            </div>
+            <button class="bg-blue-600 p-3 rounded-2xl font-bold text-xs">BUY</button>
+        </div>`;
+    }
+
+    // Live Mining
+    setInterval(() => {
+        let b = parseFloat(document.getElementById("balance").innerText);
+        document.getElementById("balance").innerText = (b + 0.0005).toFixed(6);
+    }, 1000);
+
+    // Secret Admin
+    let t=0; document.getElementById("adminLogo").onclick = () => {
+        t++; if(t>=5 && prompt("Access Key:")=="5426") alert("System Overridden");
+    };
+</script>
 </body>
 </html>
